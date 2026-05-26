@@ -6,19 +6,22 @@ on:
     branches: [ main ]
     paths-ignore:
       - 'README.md'
-      - 'imgs/'
+      - 'imgs/**'
   schedule:
     - cron: '0 4,10 * * *'
-  watch:
-    types: started
 
 jobs:
   build:
-    name: glados checkin
+    name: glados/railgun checkin
     runs-on: ubuntu-latest
+      
+    permissions:
+      contents: read
+      actions: write
+
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: [3.13]
 
     # 这里加入全局环境变量，强制后续所有第三方 actions 兼容 Node.js 24 运行环境
     env:
@@ -48,15 +51,16 @@ jobs:
         PUSHDEER_SENDKEY: ${{ secrets.PUSHDEER_SENDKEY }}
         GLADOS_COOKIES: ${{ secrets.GLADOS_COOKIES }}
         GLADOS_EXCHANGE_PLAN: ${{ secrets.GLADOS_EXCHANGE_PLAN }}
+        GLADOS_VERBOSE: ${{ secrets.GLADOS_VERBOSE }}
 
     - name: Keep alive
       uses: liskin/gh-workflow-keepalive@v1 
-      
+        
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@v2
       with:
         token: ${{ github.token }}
         repository: ${{ github.repository }}
         retain_days: 7
-        keep_minimum_runs: 10
+        keep_minimum_runs: 7
         delete_run_by_conclusion_pattern: success
