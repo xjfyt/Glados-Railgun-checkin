@@ -8,8 +8,8 @@ on:
       - 'README.md'
       - 'imgs/**'
   schedule:
-    # Avoid the top of the hour, where GitHub may delay or drop scheduled runs.
-    - cron: '17 12,18 * * *'
+    # Run at 04:00 and 08:00 Beijing time.
+    - cron: '0 4,8 * * *'
       timezone: "Asia/Shanghai"
 
 jobs:
