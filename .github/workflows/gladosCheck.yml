@@ -3,12 +3,14 @@ name: auto check
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ master ]
     paths-ignore:
       - 'README.md'
       - 'imgs/**'
   schedule:
-    - cron: '0 4,10 * * *'
+    # Avoid the top of the hour, where GitHub may delay or drop scheduled runs.
+    - cron: '17 12,18 * * *'
+      timezone: "Asia/Shanghai"
 
 jobs:
   build:
